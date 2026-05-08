@@ -1,37 +1,35 @@
 # Z.AI Web Reader MCP Server for Zed
 
-A Model Context Protocol (MCP) server for the Zed editor that fetches and converts web pages into LLM-friendly input. This extension enables Zed's AI assistant to read and understand web content by converting URLs into structured, markdown-formatted text.
+A Zed extension that connects Zed's AI assistant to Z.AI's Web Reader MCP server. It fetches web pages and converts them into LLM-friendly content through Zed's context server integration.
 
 ## Features
 
-- Fetches web pages from any URL
-- Converts HTML to clean, LLM-friendly markdown or plain text
-- Configurable image retention or removal
-- Optional caching for improved performance
-- Image and link summary generation
-- Handles complex page structures with intelligent content extraction
+- Fetches and reads web pages from URLs
+- Converts web content into markdown or plain text
+- Supports image and link summaries when provided by the remote server
+- Passes your Z.AI API key as a bearer token
+- Uses `mcp-remote` to bridge Zed's stdio MCP transport to the remote HTTP server
 
 ## Installation
 
-1. Clone or download this repository
-2. In Zed, go to **Zed > Install Development Extension** (or press `Cmd + Shift + P` and type "install development extension")
-3. Navigate to this project directory and select it
-4. Zed will build and install the extension
+1. Clone or download this repository.
+2. In Zed, run **Install Development Extension** from the command palette.
+3. Select this project directory.
+4. Zed will build and install the extension.
 
 ## Configuration
 
-This extension requires a Z.AI API key:
+This extension requires a Z.AI API key.
 
-1. Get your API key from [https://z.ai/manage-apikey/apikey-list](https://z.ai/manage-apikey/apikey-list)
-2. Subscribe to the GLM Coding Plan
-3. Add the API key to your Zed settings:
+1. Get your API key from [Z.AI Console](https://z.ai/manage-apikey/apikey-list).
+2. Add the API key to your Zed `settings.json`:
 
 ```json
 {
   "context_servers": {
     "mcp-server-zai-web-reader": {
       "settings": {
-        "zai_api_key": "your-api-key-here"
+        "zai_api_key": "your-api-key"
       }
     }
   }
@@ -40,38 +38,20 @@ This extension requires a Z.AI API key:
 
 ## Available Tools
 
-### webReader
-
-Fetches and converts a URL into LLM-friendly input.
-
-**Required Parameters:**
-- `url` (string) - The URL of the website to fetch and read
-
-**Optional Parameters:**
-- `timeout` (integer, default: 20) - Request timeout in seconds
-- `return_format` (string, default: "markdown") - Response content type: "markdown" or "text"
-- `retain_images` (boolean, default: true) - Whether to retain images in the output
-- `no_cache` (boolean, default: false) - Disable caching for this request
-- `no_gfm` (boolean, default: false) - Disable GitHub Flavored Markdown
-- `keep_img_data_url` (boolean, default: false) - Keep image data URLs
-- `with_images_summary` (boolean, default: false) - Include an images summary
-- `with_links_summary` (boolean, default: false) - Include a links summary
-
-**Example usage in Zed's AI chat:**
-```
-Read the content from https://example.com and summarize it
-```
+The available tools are provided by Z.AI's Web Reader MCP server and exposed to Zed through this extension.
 
 ## How It Works
 
-This extension uses the MCP-Remote bridge architecture:
+This extension uses `mcp-remote` to bridge Zed's stdio-based MCP transport to Z.AI's remote HTTP endpoint. When configured, it sends the API key as an `Authorization: Bearer` header.
 
-1. Zed's MCP client communicates with the local MCP server
-2. The server makes requests to the Z.AI Web Reader API
-3. The API fetches the web page and converts it to optimized markdown
-4. The formatted content is returned to Zed's AI assistant for processing
+## Development
 
-This architecture allows seamless integration with Zed's built-in AI capabilities while offloading the heavy lifting of web scraping and content extraction to the Z.AI service.
+```bash
+cargo check
+cargo build --target wasm32-wasip1 --release
+```
+
+Install as a development extension in Zed with **Install Development Extension** and select the project root.
 
 ## License
 
