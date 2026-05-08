@@ -66,7 +66,7 @@ Implements `zed::Extension` trait:
 Settings struct has one field: `zai_api_key: Option<String>`.
 
 Key constants:
-- `MCP_REMOTE_PACKAGE = "mcp-remote"` with version `"latest"`
+- `MCP_REMOTE_PACKAGE = "mcp-remote"` with version `"0.1.29"`
 - `DEFAULT_MCP_URL = "https://api.z.ai/api/mcp/web_reader/mcp"`
 
 ### 4. `configuration/default_settings.jsonc` — Default settings template
@@ -92,7 +92,7 @@ Features, installation, configuration, available tools (`webReader`), how it wor
 
 ### 9. `.github/workflows/release.yml` — CI/CD
 
-Uses `huacnlee/zed-extension-action@v1` to compile WASM and publish on tag push.
+Uses `huacnlee/zed-extension-action@v2.0.0` to publish on tag push.
 
 ## MCP Tool (exposed by remote server, passed through by mcp-remote)
 

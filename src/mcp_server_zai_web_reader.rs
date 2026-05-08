@@ -1,13 +1,13 @@
 use schemars::JsonSchema;
 use serde::Deserialize;
 
+use zed::settings::ContextServerSettings;
 use zed_extension_api::{
     self as zed, serde_json, Command, ContextServerConfiguration, ContextServerId, Project, Result,
 };
-use zed::settings::ContextServerSettings;
 
 const MCP_REMOTE_PACKAGE: &str = "mcp-remote";
-const MCP_REMOTE_VERSION: &str = "latest";
+const MCP_REMOTE_VERSION: &str = "0.1.29";
 const DEFAULT_MCP_URL: &str = "https://api.z.ai/api/mcp/web_reader/mcp";
 
 struct ZaiWebReaderMcpExtension;
@@ -65,11 +65,36 @@ impl zed::Extension for ZaiWebReaderMcpExtension {
     fn context_server_configuration(
         &mut self,
         _context_server_id: &ContextServerId,
-        _project: &Project,
+        project: &Project,
     ) -> Result<Option<ContextServerConfiguration>> {
         let installation_instructions =
             include_str!("../configuration/installation_instructions.md").to_string();
-        let default_settings = include_str!("../configuration/default_settings.jsonc").to_string();
+
+        let mut default_settings =
+            include_str!("../configuration/default_settings.jsonc").to_string();
+
+        let settings = ContextServerSettings::for_project("mcp-server-zai-web-reader", project);
+        if let Ok(user_settings) = settings {
+            if let Some(settings_value) = user_settings.settings {
+                if let Ok(zai_settings) =
+                    serde_json::from_value::<ZaiWebReaderContextServerSettings>(settings_value)
+                {
+                    match zai_settings.zai_api_key {
+                        Some(api_key) => {
+                            let serialized_api_key =
+                                serde_json::to_string(&api_key).map_err(|e| e.to_string())?;
+                            default_settings = default_settings
+                                .replace("\"YOUR_ZAI_API_KEY\"", &serialized_api_key);
+                        }
+                        None => {
+                            default_settings =
+                                default_settings.replace("\"YOUR_ZAI_API_KEY\"", "\"\"");
+                        }
+                    }
+                }
+            }
+        }
+
         let settings_schema =
             serde_json::to_string(&schemars::schema_for!(ZaiWebReaderContextServerSettings))
                 .map_err(|e| e.to_string())?;

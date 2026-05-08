@@ -1,0 +1,23 @@
+{
+  "skill_name": "zed-mcp-extension",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to create a Zed extension for the Supabase MCP server at https://mcp.supabase.com/mcp. It requires an API key passed as a query parameter ?token=KEY. Can you build it?",
+      "expected_output": "A complete Zed MCP extension with all files following the mcp-remote bridge pattern, passing the token as a query parameter in the URL instead of a header",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Help me build a Zed editor extension that connects to the Firecrawl MCP server at https://api.firecrawl.dev/mcp. Authentication is via Authorization: Bearer header. The extension should be called firecrawl-mcp.",
+      "expected_output": "A complete Zed MCP extension using the mcp-remote bridge pattern with auth header, correct API usage, settings preservation, and all supporting files",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have a custom MCP server running at https://mycompany.internal/mcp/v1 that requires both an API key header and a team-id header. How do I create a Zed extension for it with two settings fields?",
+      "expected_output": "A Zed MCP extension with two settings fields (api_key and team_id), both passed as headers to mcp-remote, with settings preservation for both fields",
+      "files": []
+    }
+  ]
+}

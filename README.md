@@ -18,8 +18,6 @@ A Model Context Protocol (MCP) server for the Zed editor that fetches and conver
 3. Navigate to this project directory and select it
 4. Zed will build and install the extension
 
-See `configuration/installation_instructions.md` for detailed setup steps including API key configuration.
-
 ## Configuration
 
 This extension requires a Z.AI API key:

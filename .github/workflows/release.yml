@@ -16,4 +16,9 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - uses: huacnlee/zed-extension-action@v1
+      - uses: huacnlee/zed-extension-action@v2.0.0
+        with:
+          extension-name: mcp-server-zai-web-reader
+          push-to: minggliangg/extensions
+        env:
+          COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
