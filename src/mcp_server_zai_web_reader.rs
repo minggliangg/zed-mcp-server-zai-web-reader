@@ -1,3 +1,7 @@
+// Based on the MCP server extension pattern from zed-mcp-server-context7
+// Copyright (c) 2025 Akbar Khairul Aziz (MIT License)
+// https://github.com/akbxr/zed-mcp-server-context7
+
 use schemars::JsonSchema;
 use serde::Deserialize;
 
